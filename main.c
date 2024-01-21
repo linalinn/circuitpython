@@ -509,7 +509,7 @@ STATIC bool run_code_py(safe_mode_t safe_mode, bool *simulate_reset) {
 
 
         // Finished executing python code. Cleanup includes filesystem flush and a board reset.
-        cleanup_after_vm(_exec_result.exception);
+        //cleanup_after_vm(_exec_result.exception);
         _exec_result.exception = NULL;
 
         // If a new next code file was set, that is a reason to keep it (obviously). Stuff this into
@@ -817,7 +817,7 @@ STATIC void __attribute__ ((noinline)) run_safemode_py(safe_mode_t safe_mode) {
         set_safe_mode(SAFE_MODE_SAFEMODE_PY_ERROR);
     }
 
-    cleanup_after_vm(_exec_result.exception);
+    //cleanup_after_vm(_exec_result.exception);
     _exec_result.exception = NULL;
 }
 #endif
@@ -913,7 +913,7 @@ STATIC void __attribute__ ((noinline)) run_boot_py(safe_mode_t safe_mode) {
 
     port_post_boot_py(true);
 
-    cleanup_after_vm(_exec_result.exception);
+    //cleanup_after_vm(_exec_result.exception);
     _exec_result.exception = NULL;
 
     port_post_boot_py(false);
@@ -921,12 +921,12 @@ STATIC void __attribute__ ((noinline)) run_boot_py(safe_mode_t safe_mode) {
 
 STATIC int run_repl(safe_mode_t safe_mode) {
     int exit_code = PYEXEC_FORCED_EXIT;
-    filesystem_flush();
+    //filesystem_flush();
 
-    start_mp(safe_mode);
+    //start_mp(safe_mode);
 
     #if CIRCUITPY_USB
-    usb_setup_with_vm();
+    //usb_setup_with_vm();
     #endif
 
     autoreload_suspend(AUTORELOAD_SUSPEND_REPL);

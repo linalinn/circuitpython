@@ -606,6 +606,7 @@ STATIC bool run_code_py(safe_mode_t safe_mode, bool *simulate_reset) {
             // We're kicking off the autoreload process so reset now. If any
             // other reloads trigger after this, then we'll want another wait
             // period.
+            cleanup_after_vm(NULL);
             autoreload_reset();
             break;
         }
@@ -615,6 +616,7 @@ STATIC bool run_code_py(safe_mode_t safe_mode, bool *simulate_reset) {
             // Skip REPL if reload was requested.
             skip_repl = serial_read() == CHAR_CTRL_D;
             if (skip_repl) {
+                cleanup_after_vm(NULL);
                 supervisor_set_run_reason(RUN_REASON_REPL_RELOAD);
             }
             break;
@@ -816,8 +818,7 @@ STATIC void __attribute__ ((noinline)) run_safemode_py(safe_mode_t safe_mode) {
         _exec_result.exception != MP_OBJ_SENTINEL) {
         set_safe_mode(SAFE_MODE_SAFEMODE_PY_ERROR);
     }
-
-    //cleanup_after_vm(_exec_result.exception);
+    cleanup_after_vm(_exec_result.exception);
     _exec_result.exception = NULL;
 }
 #endif
@@ -912,8 +913,7 @@ STATIC void __attribute__ ((noinline)) run_boot_py(safe_mode_t safe_mode) {
     }
 
     port_post_boot_py(true);
-
-    //cleanup_after_vm(_exec_result.exception);
+    cleanup_after_vm(_exec_result.exception);
     _exec_result.exception = NULL;
 
     port_post_boot_py(false);
